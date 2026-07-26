@@ -1,0 +1,15 @@
+student_api/
+│
+├── app/
+│   ├── main.py          ← Starts FastAPI
+│   │
+│   ├── routes/
+│   │     └── student.py ← Handles HTTP requests
+│   │
+│   ├── services/
+│   │     └── student_service.py ← Business logic
+│   │
+│   ├── models/
+│   │     └── student.py ← Data model
+│   │
+│   └── database.py      ← We'll use this next

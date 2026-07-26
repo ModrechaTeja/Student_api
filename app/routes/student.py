@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from app.models.student import Student
+from app.services import student_service
 
 router = APIRouter()
 
@@ -14,69 +15,61 @@ def home():
 
 @router.post("/student")
 def create_student(student: Student):
-    global next_student_id
 
-    students[next_student_id] = {
-        "id": next_student_id,
-        "name": student.name,
-        "age": student.age
-    }
-
-    next_student_id += 1
+    created_student = student_service.create_student(student)
 
     return {
         "message": "Student created successfully",
-        "student": students[next_student_id - 1]
+        "student": created_student
     }
 
 
 @router.get("/students")
 def get_students():
-    return students
+    return student_service.get_students()
 
 
 @router.get("/student/{student_id}")
 def get_student(student_id: int):
-    if student_id not in students:
+
+    student = student_service.get_student(student_id)
+
+    if student is None:
         raise HTTPException(
             status_code=404,
             detail="Student not found"
         )
 
-    return students[student_id]
+    return student
 
 
 @router.put("/student/{student_id}")
 def update_student(student_id: int, student: Student):
 
-    if student_id not in students:
+    if student_service.get_student(student_id) is None:
         raise HTTPException(
             status_code=404,
             detail="Student not found"
         )
 
-    students[student_id] = {
-        "id": student_id,
-        "name": student.name,
-        "age": student.age
-    }
+    updated_student = student_service.update_student(student_id, student)
 
     return {
         "message": "Student updated successfully",
-        "student": students[student_id]
+        "student": updated_student
     }
 
 
 @router.delete("/student/{student_id}")
 def delete_student(student_id: int):
 
-    if student_id not in students:
+    if student_service.get_student(student_id) is None:
         raise HTTPException(
             status_code=404,
             detail="Student not found"
         )
 
-    deleted_student = students.pop(student_id)
+    deleted_student = student_service.delete_student(student_id)
 
     return {
         "message": "Student deleted successfully",
