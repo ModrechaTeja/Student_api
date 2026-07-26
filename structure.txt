@@ -7,9 +7,9 @@ student_api/
 │   │     └── student.py ← Handles HTTP requests
 │   │
 │   ├── services/
-│   │     └── student_service.py ← Business logic
+│   │     └── student_service.py ← logic
 │   │
 │   ├── models/
 │   │     └── student.py ← Data model
 │   │
-│   └── database.py      ← We'll use this next
+│   └── database.py      ← Stores Data 
